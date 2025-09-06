@@ -5,20 +5,21 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>CopperDevs.Kronos</RootNamespace>
+        <PublishAot>true</PublishAot>
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Update="Server.Requests.cs">
-        <DependentUpon>Server.cs</DependentUpon>
-      </Compile>
-      <Compile Update="Server.Logic.cs">
-        <DependentUpon>Server.cs</DependentUpon>
-      </Compile>
+        <Compile Update="Server.Requests.cs">
+            <DependentUpon>Server.cs</DependentUpon>
+        </Compile>
+        <Compile Update="Server.Logic.cs">
+            <DependentUpon>Server.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="CopperDevs.Core" Version="1.1.14" />
-      <PackageReference Include="CopperDevs.Logger" Version="1.1.1" />
+        <PackageReference Include="CopperDevs.Core" Version="1.1.14"/>
+        <PackageReference Include="CopperDevs.Logger" Version="1.1.1"/>
     </ItemGroup>
 
 </Project>
