@@ -11,4 +11,9 @@
       <ProjectReference Include="..\Kronos\Kronos.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Resources\Testing.html" />
+      <EmbeddedResource Include="Resources\Testing.html" />
+    </ItemGroup>
+
 </Project>
