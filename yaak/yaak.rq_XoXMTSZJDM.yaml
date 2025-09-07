@@ -1,0 +1,35 @@
+type: http_request
+model: http_request
+id: rq_XoXMTSZJDM
+createdAt: 2025-09-07T00:11:18.675046
+updatedAt: 2025-09-07T00:39:44.371660
+workspaceId: wk_59ppqEULWe
+folderId: null
+authentication: {}
+authenticationType: null
+body:
+  form:
+  - enabled: true
+    id: MGRXXXyiUz
+    name: test
+    value: value
+  - enabled: true
+    id: V4t6FQFdcz
+    name: idk
+    value: wtf
+  - enabled: true
+    id: mcqEW4mm7W
+    name: ''
+    value: ''
+bodyType: multipart/form-data
+description: ''
+headers:
+- enabled: true
+  name: Content-Type
+  value: multipart/form-data
+  id: NZ4QJugiQw
+method: POST
+name: ''
+sortPriority: -1757203878673.0
+url: localhost:3000
+urlParameters: []

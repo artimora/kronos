@@ -1,0 +1,14 @@
+type: workspace
+model: workspace
+id: wk_59ppqEULWe
+createdAt: 2025-09-07T00:10:04.784378
+updatedAt: 2025-09-07T00:10:04.784378
+authentication: {}
+authenticationType: null
+description: ''
+headers: []
+name: Kronos
+encryptionKeyChallenge: null
+settingValidateCertificates: true
+settingFollowRedirects: true
+settingRequestTimeout: 0
