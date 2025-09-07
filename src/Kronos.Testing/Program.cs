@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using CopperDevs.Kronos;
 using CopperDevs.Kronos.Data;
-using Kronos.Testing;
+using CopperDevs.Kronos.Testing;
 
 var loader = new ResourceLoader(typeof(ResourceLoader).Assembly, "Kronos.Testing.Resources");
 
