@@ -13,8 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Resources\Testing.html" />
-      <EmbeddedResource Include="Resources\Testing.html" />
+      <None Remove="Resources\*" />
+      <EmbeddedResource Include="Resources\*" />
     </ItemGroup>
 
 </Project>

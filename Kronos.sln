@@ -4,6 +4,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kronos", "src\Kronos\Kronos
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kronos.Testing", "src\Kronos.Testing\Kronos.Testing.csproj", "{50FD5313-A63B-4363-A783-6F48FA19D01D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repo", "Repo", "{59D0C9C2-DB59-4839-B9B5-666BDFBF6086}"
+	ProjectSection(SolutionItems) = preProject
+		License = License
+		ReadMe.md = ReadMe.md
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
