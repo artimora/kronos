@@ -11,6 +11,8 @@ var server = new Server()
     {
         ["Hello"] = "World!"
     }), ReturnType.Json)
-    .Get("/html", () => loader.LoadTextResource("Testing.html"), ReturnType.Html);
+    .Get("/html", () => loader.LoadTextResource("Testing.html"), ReturnType.Html)
+    .Post("/", () => "Hello, World!", ReturnType.Text);
+
 
 server.Listen(3000); // blocking
