@@ -2,10 +2,10 @@ type: workspace
 model: workspace
 id: wk_59ppqEULWe
 createdAt: 2025-09-07T00:10:04.784378
-updatedAt: 2025-09-07T00:10:04.784378
+updatedAt: 2025-09-07T00:42:29.121618
 authentication: {}
-authenticationType: null
-description: ''
+authenticationType: none
+description: C# web api testing moment lol
 headers: []
 name: Kronos
 encryptionKeyChallenge: null
