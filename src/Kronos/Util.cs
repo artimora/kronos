@@ -6,28 +6,48 @@ namespace CopperDevs.Kronos;
 
 public static class Util
 {
-    public static Dictionary<string, string> GetRequestPostData(HttpListenerRequest request)
+    public static (Dictionary<string, string>?, string?) GetRequestBodyContents(HttpListenerRequest request)
     {
+        var contents = (new Dictionary<string, string>(), string.Empty);
+        using var body = CloneStream(request.InputStream);
+
+        if (!request.HasEntityBody)
+            return contents;
+
         try
         {
-            if (!request.HasEntityBody)
-                return new Dictionary<string, string>();
-
-            using var body = request.InputStream;
-
-            // Parse form-data
             var parser = MultipartFormDataParser.Parse(body);
-
-            // Convert to dictionary (name => value)
-            return parser.Parameters.ToDictionary(p => p.Name, p => p.Data);
+            contents.Item1 = parser.Parameters.ToDictionary(p => p.Name, p => p.Data);
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            var previous = CopperLogger.SimpleExceptions;
-            CopperLogger.SimpleExceptions = true;
-            Log.Exception(e);
-            CopperLogger.SimpleExceptions = previous;
-            return new Dictionary<string, string>();
+            contents.Item1 = [];
         }
+
+        try
+        {
+            using var reader = new StreamReader(request.InputStream, request.ContentEncoding);
+            var content = reader.ReadToEnd();
+            contents.Item2 = content;
+        }
+        catch (Exception)
+        {
+            contents.Item2 = string.Empty;
+        }
+
+        return contents;
+    }
+
+
+    public static MemoryStream CloneStream(Stream originalStream)
+    {
+        if (originalStream.CanSeek)
+            originalStream.Position = 0;
+
+
+        MemoryStream clonedStream = new();
+        originalStream.CopyTo(clonedStream);
+        clonedStream.Position = 0;
+        return clonedStream;
     }
 }

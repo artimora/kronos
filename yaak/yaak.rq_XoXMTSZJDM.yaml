@@ -2,20 +2,20 @@ type: http_request
 model: http_request
 id: rq_XoXMTSZJDM
 createdAt: 2025-09-07T00:11:18.675046
-updatedAt: 2025-09-09T01:09:20.825913
+updatedAt: 2025-09-09T16:47:14.364113400
 workspaceId: wk_59ppqEULWe
 folderId: null
 authentication: {}
 authenticationType: null
 body:
-  text: '{}'
-bodyType: application/json
+  text: bro what the helly
+bodyType: other
 description: ''
 headers:
 - enabled: true
   name: Content-Type
-  value: application/json
-  id: xXbKNGEKDB
+  value: text/plain
+  id: 0GaAp30bFx
 method: POST
 name: ''
 sortPriority: -1757203878673.0
