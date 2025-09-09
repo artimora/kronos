@@ -6,44 +6,44 @@ namespace CopperDevs.Kronos;
 
 public static class Util
 {
-    public static (Dictionary<string, string>?, string?) GetRequestBodyContents(HttpListenerRequest request)
+    public static (Dictionary<string, string>? FormData, string? RawBody) GetRequestBodyContents(HttpListenerRequest request)
     {
-        var contents = (new Dictionary<string, string>(), string.Empty);
+        if (!request.HasEntityBody)
+            return (new Dictionary<string, string>(), string.Empty);
+
         using var body = CloneStream(request.InputStream);
 
-        if (!request.HasEntityBody)
-            return contents;
+        var formData = new Dictionary<string, string>();
+        string rawBody = string.Empty;
 
         try
         {
             var parser = MultipartFormDataParser.Parse(body);
-            contents.Item1 = parser.Parameters.ToDictionary(p => p.Name, p => p.Data);
+            formData = parser.Parameters.ToDictionary(p => p.Name, p => p.Data);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            contents.Item1 = [];
+            Log.Debug($"Multipart parsing failed: {ex.Message}");
         }
 
+        body.Position = 0;
         try
         {
-            using var reader = new StreamReader(request.InputStream, request.ContentEncoding);
-            var content = reader.ReadToEnd();
-            contents.Item2 = content;
+            using var reader = new StreamReader(body, request.ContentEncoding, leaveOpen: true);
+            rawBody = reader.ReadToEnd();
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            contents.Item2 = string.Empty;
+            Log.Debug($"Raw body read failed: {ex.Message}");
         }
 
-        return contents;
+        return (formData, rawBody);
     }
-
 
     public static MemoryStream CloneStream(Stream originalStream)
     {
         if (originalStream.CanSeek)
             originalStream.Position = 0;
-
 
         MemoryStream clonedStream = new();
         originalStream.CopyTo(clonedStream);

@@ -99,16 +99,7 @@ public partial class Server
         Log.Info($"Request handler found: {method.ToString().ToUpper()} {path}");
 
         var body = Util.GetRequestBodyContents(request);
-
-        var bodyData = new List<string>();
-        foreach (var item in body.Item1!)
-        {
-            bodyData.Add($"{item.Key}:{item.Value}");
-        }
-
-        Log.Debug(bodyData);
-        Log.Debug(body.Item2!);
-
+        
         var requestData = new RequestData
         (
             request.UserAgent,
