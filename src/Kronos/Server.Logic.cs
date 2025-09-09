@@ -34,11 +34,10 @@ public partial class Server
 
             var req = ctx.Request;
             var resp = ctx.Response;
-            
+
             try
             {
-                // Log.Debug($"\n{JsonSerializer.Serialize(Util.GetRequestPostData(req))}"); // TODO: have this data be accessible in the client per method shi 
-                var handled = HandleRequest(GetMethod(req.HttpMethod), req.Url!.LocalPath);
+                var handled = HandleRequest(GetMethod(req.HttpMethod), req.Url!.LocalPath, req);
 
                 if (handled is null)
                 {
@@ -63,21 +62,21 @@ public partial class Server
             catch (Exception e)
             {
                 Log.Exception(e);
-                
+
                 resp.StatusCode = (int)HttpStatusCode.InternalServerError;
                 resp.ContentType = "text/plain";
-                
+
                 var data = Encoding.UTF8.GetBytes(e.Message);
                 resp.ContentEncoding = Encoding.UTF8;
                 resp.ContentLength64 = data.LongLength;
-                
+
                 await resp.OutputStream.WriteAsync(data);
                 resp.Close();
             }
         }
     }
 
-    private RequestReturnData? HandleRequest(RequestMethod method, string path)
+    private RequestReturnData? HandleRequest(RequestMethod method, string path, HttpListenerRequest request)
     {
         Log.Network($"Request: {method.ToString().ToUpper()} {path}");
 
@@ -99,7 +98,17 @@ public partial class Server
 
         Log.Info($"Request handler found: {method.ToString().ToUpper()} {path}");
 
-        var data = handler.Item1();
+        var requestData = new RequestData
+        (
+            request.UserAgent,
+            Util.GetRequestPostData(request),
+            request.Cookies,
+            request.Headers,
+            request.Url,
+            request.RawUrl
+        );
+
+        var data = handler.Item1(requestData);
         var type = GetReturnType(handler.Item2);
 
         Log.Success($"Handled: {method.ToString().ToUpper()} {path}");

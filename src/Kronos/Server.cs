@@ -7,7 +7,7 @@ public partial class Server
 {
     private HttpListener listener = null!;
 
-    private readonly Dictionary<RequestMethod, Dictionary<string, Tuple<Func<string>, ReturnType>>> requestHandlers = new();
+    private readonly Dictionary<RequestMethod, Dictionary<string, UserRequestMethodData>> requestHandlers = new();
 
     private static string GetReturnType(ReturnType returnType)
     {
