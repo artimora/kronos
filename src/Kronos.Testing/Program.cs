@@ -3,7 +3,7 @@ using CopperDevs.Kronos;
 using CopperDevs.Kronos.Data;
 using CopperDevs.Kronos.Testing;
 
-var loader = new ResourceLoader(typeof(ResourceLoader).Assembly, "Kronos.Testing.Resources");
+var loader = new ResourceLoader(typeof(ResourceLoader).Assembly, "CopperDevs.Kronos.Testing.Resources");
 
 var server = new Server()
     .Get("/", () => "Hello, World!", ReturnType.Text)
