@@ -2,7 +2,7 @@ type: http_request
 model: http_request
 id: rq_QX5GhN8rwe
 createdAt: 2025-09-11T16:32:14.616164400
-updatedAt: 2025-09-11T16:33:54.507553400
+updatedAt: 2025-09-11T17:09:56.773936800
 workspaceId: wk_59ppqEULWe
 folderId: null
 authentication: {}
@@ -18,7 +18,7 @@ url: localhost:3000/:id/:value
 urlParameters:
 - enabled: true
   name: :id
-  value: test
+  value: value
   id: 984tFUwyu3
 - enabled: true
   name: :value
@@ -27,4 +27,4 @@ urlParameters:
 - enabled: true
   name: ''
   value: ''
-  id: BQCMDJBbaR
+  id: KPegIQH8GN

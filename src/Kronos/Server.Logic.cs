@@ -66,7 +66,9 @@ public partial class Server
                 resp.StatusCode = (int)HttpStatusCode.InternalServerError;
                 resp.ContentType = "application/json";
 
-                var data = Encoding.UTF8.GetBytes(ReturnMessage<HttpStatusCode>.CreateWithError(e.Messsage).ToString());
+                var message = ReturnMessage<HttpStatusCode>.CreateWithError(e.Message).ToJson();
+                Log.Debug(message);
+                var data = Encoding.UTF8.GetBytes(message);
                 resp.ContentEncoding = Encoding.UTF8;
                 resp.ContentLength64 = data.LongLength;
 
@@ -102,6 +104,8 @@ public partial class Server
         else if (!methodHandlers.TryGetValue(path, out handler))
         {
             Log.Error($"No request handler found for path '{method.ToString().ToUpper()}' with method '{path}'.");
+            Console.WriteLine();
+            return null!;
         }
         else
         {
