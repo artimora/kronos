@@ -8,14 +8,34 @@ namespace CopperDevs.Kronos;
 
 public partial class Server
 {
-    public void Listen(int port)
+    public void Listen() => Listen(3000);
+
+    public void Listen(params int[] ports)
+    {
+        var uris = new string[ports.Length * 2];
+
+        for (int i = 0; i < ports.Length; i++)
+        {
+            uris[i * 2] = $"http://127.0.0.1:{ports[i]}/";
+            uris[i * 2 + 1] = $"http://localhost:{ports[i]}/";
+        }
+
+        Listen(uris);
+    }
+
+
+    public void Listen(params string[] baseUris)
     {
         listener = new HttpListener();
-        listener.Prefixes.Add($"http://127.0.0.1:{port}/");
-        listener.Prefixes.Add($"http://localhost:{port}/");
+
+        for (int i = 0; i < baseUris.Length; i++)
+            listener.Prefixes.Add(baseUris[i]);
+
         listener.Start();
 
-        Log.Network($"Listening for connections on http://127.0.0.1:{port}/");
+        Log.Network($"Listening for connections in the following places,");
+        Log.Network(baseUris);
+
         Console.WriteLine();
 
         // Handle requests
@@ -91,7 +111,7 @@ public partial class Server
             return null!;
         }
 
-        UserRequestMethodData handler;
+        UserRequestMethodData handler = default!;
 
         if (Util.FindMatchingTemplate(methodHandlers.Keys, path, out var urlValues) is string handlerMatch)
         {
