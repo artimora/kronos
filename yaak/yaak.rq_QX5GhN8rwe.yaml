@@ -1,0 +1,30 @@
+type: http_request
+model: http_request
+id: rq_QX5GhN8rwe
+createdAt: 2025-09-11T16:32:14.616164400
+updatedAt: 2025-09-11T16:33:54.507553400
+workspaceId: wk_59ppqEULWe
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: ''
+sortPriority: -1757203878673.0
+url: localhost:3000/:id/:value
+urlParameters:
+- enabled: true
+  name: :id
+  value: test
+  id: 984tFUwyu3
+- enabled: true
+  name: :value
+  value: value
+  id: TzWjn5W2v2
+- enabled: true
+  name: ''
+  value: ''
+  id: BQCMDJBbaR

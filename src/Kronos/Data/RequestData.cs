@@ -10,7 +10,8 @@ public readonly struct RequestData(
     NameValueCollection headers,
     Uri? requestUrl,
     string? requestRawUrl,
-    string? bodyTextContents
+    string? bodyTextContents,
+    Dictionary<string, string>? urlDynamicValues
 )
 {
     public readonly string UserAgent = userAgent;
@@ -20,4 +21,11 @@ public readonly struct RequestData(
     public readonly Uri? RequestUrl = requestUrl;
     public readonly string? RequestRawUrl = requestRawUrl;
     public readonly string? BodyTextContents = bodyTextContents;
+    private readonly Dictionary<string, string> UrlDynamicValues = urlDynamicValues ?? [];
+
+
+    public string GetParam(string paramName)
+    {
+        return UrlDynamicValues[paramName] ?? string.Empty;
+    }
 }

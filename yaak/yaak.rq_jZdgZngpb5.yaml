@@ -1,0 +1,26 @@
+type: http_request
+model: http_request
+id: rq_jZdgZngpb5
+createdAt: 2025-09-11T15:33:56.779469900
+updatedAt: 2025-09-11T16:15:38.008564400
+workspaceId: wk_59ppqEULWe
+folderId: null
+authentication: {}
+authenticationType: null
+body: {}
+bodyType: null
+description: ''
+headers: []
+method: GET
+name: ''
+sortPriority: -1757203878673.0
+url: localhost:3000/test/:id
+urlParameters:
+- enabled: true
+  name: :id
+  value: test
+  id: chX9heBF5z
+- enabled: true
+  name: ''
+  value: ''
+  id: 2EsEpETydu

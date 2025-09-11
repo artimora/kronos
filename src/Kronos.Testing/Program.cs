@@ -16,7 +16,27 @@ var server = new Server()
     {
         ["hello"] = "world!",
         ["content"] = d.BodyTextContents ?? string.Empty
-    }), ReturnType.Json);
-    
+    }), ReturnType.Json)
+    .Get("/test/:id", (d) =>
+    {
+        var id = d.GetParam("id");
+
+        return $"{nameof(id)}: {id}";
+    }, ReturnType.Text)
+    .Get("/test/:id/:value", (d) =>{
+
+        var id = d.GetParam("id");
+        var value = d.GetParam("value");
+
+        return $"{nameof(id)}: {id} | {nameof(value)}: {value}";
+    }, ReturnType.Text)
+    .Get("/:id/:value", (d) =>{
+
+        var id = d.GetParam("id");
+        var value = d.GetParam("value");
+
+        return $"{nameof(id)}: {id} | {nameof(value)}: {value}";
+    }, ReturnType.Text);
+
 
 server.Listen(3000); // blocking

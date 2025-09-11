@@ -64,9 +64,9 @@ public partial class Server
                 Log.Exception(e);
 
                 resp.StatusCode = (int)HttpStatusCode.InternalServerError;
-                resp.ContentType = "text/plain";
+                resp.ContentType = "application/json";
 
-                var data = Encoding.UTF8.GetBytes(e.Message);
+                var data = Encoding.UTF8.GetBytes(ReturnMessage<HttpStatusCode>.CreateWithError(e.Messsage).ToString());
                 resp.ContentEncoding = Encoding.UTF8;
                 resp.ContentLength64 = data.LongLength;
 
@@ -78,6 +78,7 @@ public partial class Server
 
     private RequestReturnData? HandleRequest(RequestMethod method, string path, HttpListenerRequest request)
     {
+
         Log.Network($"Request: {method.ToString().ToUpper()} {path}");
 
         if (!requestHandlers.TryGetValue(method, out var methodHandlers))
@@ -88,27 +89,40 @@ public partial class Server
             return null!;
         }
 
-        if (!methodHandlers.TryGetValue(path, out var handler))
+        UserRequestMethodData handler;
+
+        if (Util.FindMatchingTemplate(methodHandlers.Keys, path, out var urlValues) is string handlerMatch)
+        {
+            Log.Debug($"Match: {handlerMatch}");
+            foreach (var kv in urlValues)
+                Log.Debug($"  {kv.Key} = {kv.Value}");
+
+            handler = methodHandlers[handlerMatch];
+        }
+        else if (!methodHandlers.TryGetValue(path, out handler))
         {
             Log.Error($"No request handler found for path '{method.ToString().ToUpper()}' with method '{path}'.");
-
+        }
+        else
+        {
             Console.WriteLine();
             return null!;
         }
 
         Log.Info($"Request handler found: {method.ToString().ToUpper()} {path}");
 
-        var body = Util.GetRequestBodyContents(request);
-        
+        var (FormData, RawBody) = Util.GetRequestBodyContents(request);
+
         var requestData = new RequestData
         (
             request.UserAgent,
-            body.Item1,
+            FormData,
             request.Cookies,
             request.Headers,
             request.Url,
             request.RawUrl,
-            body.Item2
+            RawBody,
+            urlValues ?? []
         );
 
         var data = handler.Item1(requestData);

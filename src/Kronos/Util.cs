@@ -50,4 +50,50 @@ public static class Util
         clonedStream.Position = 0;
         return clonedStream;
     }
+    public static bool TryMatchPath(
+        string dynamicTemplate,
+        string filledPath,
+        out Dictionary<string, string> values)
+    {
+        values = [];
+
+        var templateParts = dynamicTemplate.Split('/', StringSplitOptions.RemoveEmptyEntries);
+        var filledParts = filledPath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+
+        if (templateParts.Length != filledParts.Length)
+            return false;
+
+        for (int i = 0; i < templateParts.Length; i++)
+        {
+            var templatePart = templateParts[i];
+            var filledPart = filledParts[i];
+
+            if (templatePart.StartsWith(':'))
+            {
+                var key = templatePart[1..];
+                values[key] = filledPart;
+            }
+            else if (!string.Equals(templatePart, filledPart, StringComparison.OrdinalIgnoreCase))
+            {
+                return false; // mismatch in static segment
+            }
+        }
+
+        return true;
+    }
+
+    public static string? FindMatchingTemplate(
+        IEnumerable<string> dynamicTemplates,
+        string filledPath,
+        out Dictionary<string, string> values)
+    {
+        foreach (var template in dynamicTemplates)
+        {
+            if (TryMatchPath(template, filledPath, out values))
+                return template;
+        }
+
+        values = [];
+        return null; // no match
+    }
 }
