@@ -101,17 +101,22 @@ public partial class Server
 
             handler = methodHandlers[handlerMatch];
         }
-        else if (!methodHandlers.TryGetValue(path, out handler))
+
+        if (methodHandlers.TryGetValue(path, out var foundHandler))
+        {
+            if (foundHandler is not null)
+                handler = foundHandler;
+        }
+        else
         {
             Log.Error($"No request handler found for path '{method.ToString().ToUpper()}' with method '{path}'.");
             Console.WriteLine();
             return null!;
         }
-        else
-        {
-            Console.WriteLine();
+
+        if (handler is null)
             return null!;
-        }
+
 
         Log.Info($"Request handler found: {method.ToString().ToUpper()} {path}");
 
