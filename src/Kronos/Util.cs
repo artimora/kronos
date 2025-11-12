@@ -2,7 +2,7 @@ using System.Net;
 using CopperDevs.Logger;
 using HttpMultipartParser;
 
-namespace CopperDevs.Kronos;
+namespace Artimora.Kronos;
 
 public static class Util
 {

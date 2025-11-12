@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace CopperDevs.Kronos.Data;
+namespace Artimora.Kronos.Data;
 
 public struct ReturnMessage<T>
 {

@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace CopperDevs.Kronos.Testing;
+namespace Artimora.Kronos.Testing;
 
 public class ResourceLoader(Assembly targetAssembly, string rootPath)
 {

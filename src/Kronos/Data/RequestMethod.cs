@@ -1,4 +1,4 @@
-namespace CopperDevs.Kronos.Data;
+namespace Artimora.Kronos.Data;
 
 internal enum RequestMethod
 {

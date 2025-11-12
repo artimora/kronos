@@ -1,6 +1,6 @@
-using CopperDevs.Kronos.Data;
+using Artimora.Kronos.Data;
 
-namespace CopperDevs.Kronos;
+namespace Artimora.Kronos;
 
 public partial class Server
 {

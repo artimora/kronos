@@ -1,7 +1,7 @@
 using System.Collections.Specialized;
 using System.Net;
 
-namespace CopperDevs.Kronos.Data;
+namespace Artimora.Kronos.Data;
 
 public readonly struct RequestData(
     string userAgent,
@@ -22,7 +22,6 @@ public readonly struct RequestData(
     public readonly string? RequestRawUrl = requestRawUrl;
     public readonly string? BodyTextContents = bodyTextContents;
     private readonly Dictionary<string, string> UrlDynamicValues = urlDynamicValues ?? [];
-
 
     public string GetParam(string paramName)
     {

@@ -1,10 +1,9 @@
 using System.Net;
 using System.Text;
-using System.Text.Json;
-using CopperDevs.Kronos.Data;
+using Artimora.Kronos.Data;
 using CopperDevs.Logger;
 
-namespace CopperDevs.Kronos;
+namespace Artimora.Kronos;
 
 public partial class Server
 {
