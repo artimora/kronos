@@ -44,6 +44,14 @@ public static class Program
                 return $"{nameof(id)}: {id} | {nameof(value)}: {value}";
             }, ReturnType.Text);
 
+        server.iGet["/:id/:value"] = (d) =>
+            {
+
+                var id = d.GetParam("id");
+                var value = d.GetParam("value");
+
+                return $"{nameof(id)}: {id} | {nameof(value)}: {value}";
+            };
 
         server.Listen(3000, 4321, 5172); // blocking
     }
