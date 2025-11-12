@@ -32,8 +32,7 @@ public partial class Server
 
         listener.Start();
 
-        Log.Network($"Listening for connections in the following places,");
-        Log.Network(baseUris);
+        Log.Network(baseUris.AddFirstItem($"Listening for connections in the following places:"));
 
         Console.WriteLine();
 

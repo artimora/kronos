@@ -15,6 +15,9 @@
         <Compile Update="Server.Logic.cs">
             <DependentUpon>Server.cs</DependentUpon>
         </Compile>
+        <Compile Update="Server.Indexer.cs">
+            <DependentUpon>Server.cs</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
