@@ -85,9 +85,8 @@ public partial class Server
                 resp.StatusCode = (int)HttpStatusCode.InternalServerError;
                 resp.ContentType = "application/json";
 
-                var message = ReturnMessage<HttpStatusCode>.CreateWithError(e.Message).ToJson();
-                Log.Debug(message);
-                var data = Encoding.UTF8.GetBytes(message);
+                Log.Debug(e.Message);
+                var data = Encoding.UTF8.GetBytes(e.Message);
                 resp.ContentEncoding = Encoding.UTF8;
                 resp.ContentLength64 = data.LongLength;
 
