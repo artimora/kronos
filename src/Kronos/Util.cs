@@ -50,6 +50,7 @@ public static class Util
         clonedStream.Position = 0;
         return clonedStream;
     }
+
     public static bool TryMatchPath(
         string dynamicTemplate,
         string filledPath,

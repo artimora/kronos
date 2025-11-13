@@ -1,7 +1,13 @@
 namespace Artimora.Kronos.Data;
 
-internal readonly struct RequestReturnData(string data, string type)
+public readonly struct RequestReturnData
 {
-    public readonly string Data = data;
-    public readonly string Type = type;
+    public readonly string Data;
+    public readonly string Type;
+
+    internal RequestReturnData(string data, string type)
+    {
+        Data = data;
+        Type = type;
+    }
 }

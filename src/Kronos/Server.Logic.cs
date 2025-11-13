@@ -97,7 +97,6 @@ public partial class Server
 
     private RequestReturnData? HandleRequest(RequestMethod method, string path, HttpListenerRequest request)
     {
-
         Log.Network($"Request: {method.ToString().ToUpper()} {path}");
 
         if (!requestHandlers.TryGetValue(method, out var methodHandlers))
@@ -108,7 +107,7 @@ public partial class Server
             return null!;
         }
 
-        UserRequestMethodData handler = default!;
+        UserRequestMethod handler = null!;
 
         if (Util.FindMatchingTemplate(methodHandlers.Keys, path, out var urlValues) is string handlerMatch)
         {
@@ -137,26 +136,26 @@ public partial class Server
 
         Log.Info($"Request handler found: {method.ToString().ToUpper()} {path}");
 
-        var (FormData, RawBody) = Util.GetRequestBodyContents(request);
+        var (formData, rawBody) = Util.GetRequestBodyContents(request);
 
         var requestData = new RequestData
         (
-            request.UserAgent,
-            FormData,
+            request.UserAgent!,
+            formData,
             request.Cookies,
             request.Headers,
             request.Url,
             request.RawUrl,
-            RawBody,
+            rawBody,
             urlValues ?? []
         );
 
-        var data = handler.Item1(requestData);
-        var type = GetReturnType(handler.Item2);
+        var data = handler(requestData);
+
 
         Log.Success($"Handled: {method.ToString().ToUpper()} {path}");
 
         Console.WriteLine();
-        return new RequestReturnData(data, type);
+        return data;
     }
 }

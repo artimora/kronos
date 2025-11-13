@@ -28,4 +28,10 @@ public readonly struct RequestData(
     {
         return UrlDynamicValues[paramName] ?? string.Empty;
     }
+
+    public RequestReturnData Text(string text) => new(text, Server.GetReturnType(ReturnType.Text));
+
+    public RequestReturnData Json(object data) => new(JsonSerializer.Serialize(data), Server.GetReturnType(ReturnType.Json));
+
+    public RequestReturnData Html(string text) => new(text, Server.GetReturnType(ReturnType.Html));
 }
