@@ -22,6 +22,8 @@ public readonly struct RequestData(
     public readonly Uri? RequestUrl = requestUrl;
     public readonly string? RequestRawUrl = requestRawUrl;
     public readonly string? BodyTextContents = bodyTextContents;
+
+    // ReSharper disable once InconsistentNaming
     private readonly Dictionary<string, string> UrlDynamicValues = urlDynamicValues ?? [];
 
     public string GetParam(string paramName)
@@ -31,7 +33,9 @@ public readonly struct RequestData(
 
     public RequestReturnData Text(string text) => new(text, Server.GetReturnType(ReturnType.Text));
 
+#pragma warning disable IL2026, IL3050
     public RequestReturnData Json(object data) => new(JsonSerializer.Serialize(data), Server.GetReturnType(ReturnType.Json));
+#pragma warning restore IL2026, IL3050
 
     public RequestReturnData Html(string text) => new(text, Server.GetReturnType(ReturnType.Html));
 }

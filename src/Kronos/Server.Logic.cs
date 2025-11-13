@@ -117,8 +117,7 @@ public partial class Server
 
             handler = methodHandlers[handlerMatch];
         }
-
-        if (methodHandlers.TryGetValue(path, out var foundHandler))
+        else if (methodHandlers.TryGetValue(path, out var foundHandler))
         {
             if (foundHandler is not null)
                 handler = foundHandler;
