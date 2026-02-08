@@ -19,33 +19,7 @@ public partial class Server
         };
     }
 
-    public static RequestMethod GetMethod(string method)
-    {
-        return method switch
-        {
-            "GET" => RequestMethod.Get,
-            "POST" => RequestMethod.Post,
-            "PUT" => RequestMethod.Put,
-            "DELETE" => RequestMethod.Delete,
-            "PATCH" => RequestMethod.Patch,
-            _ => throw new ArgumentOutOfRangeException(nameof(method), method, null)
-        };
-    }
-
-    public static string GetMethod(RequestMethod method)
-    {
-        return method switch
-        {
-            RequestMethod.Get => "GET",
-            RequestMethod.Post => "POST",
-            RequestMethod.Patch => "PATCH",
-            RequestMethod.Put => "PUT",
-            RequestMethod.Delete => "DELETE",
-            _ => throw new ArgumentOutOfRangeException(nameof(method), method, null)
-        };
-    }
-
-    internal Server()
+    private Server()
     {
     }
 }
