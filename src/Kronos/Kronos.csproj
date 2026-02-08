@@ -6,6 +6,21 @@
         <Nullable>enable</Nullable>
         <RootNamespace>Artimora.Kronos</RootNamespace>
         <PublishAot>true</PublishAot>
+        <PackageId>Artimora.Kronos</PackageId>
+        <Title>Kronos</Title>
+        <Authors>Artimora</Authors>
+        <Description>thin, easy to use, web framework</Description>
+        <Copyright>MIT</Copyright>
+        <PackageProjectUrl>https://github.com/artimora/kronos</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/artimora/kronos</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <Company>Artimora</Company>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <PackageLicenseFile>License</PackageLicenseFile>
+        <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -16,14 +31,30 @@
             <DependentUpon>Server.cs</DependentUpon>
         </Compile>
         <Compile Update="Server.Builder.cs">
-          <DependentUpon>Server.cs</DependentUpon>
+            <DependentUpon>Server.cs</DependentUpon>
         </Compile>
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="CopperDevs.Core" Version="1.1.14" />
-        <PackageReference Include="CopperDevs.Logger" Version="1.1.1" />
-        <PackageReference Include="HttpMultipartParser" Version="9.1.0" />
+        <PackageReference Include="CopperDevs.Core" Version="1.1.14"/>
+        <PackageReference Include="CopperDevs.Logger" Version="1.1.1"/>
+        <PackageReference Include="HttpMultipartParser" Version="9.1.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Kronos.csproj.DotSettings"/>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <None Include="..\..\ReadMe.md">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
+        <None Include="..\..\License">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
     </ItemGroup>
 
 </Project>
