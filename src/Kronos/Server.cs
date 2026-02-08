@@ -7,7 +7,7 @@ public partial class Server
 {
     private HttpListener listener = null!;
 
-    private readonly Dictionary<RequestMethod, Dictionary<string, UserRequestMethod>> requestHandlers = new();
+    private readonly Dictionary<string, Dictionary<string, UserRequestMethod>> requestHandlers = new();
 
     internal static string GetReturnType(ReturnType returnType)
     {
@@ -20,7 +20,7 @@ public partial class Server
         };
     }
 
-    private static RequestMethod GetMethod(string method)
+    public static RequestMethod GetMethod(string method)
     {
         return method switch
         {
@@ -33,12 +33,20 @@ public partial class Server
         };
     }
 
-    public Server()
+    public static string GetMethod(RequestMethod method)
     {
-        Get = new ServerMethodIndexer(this, RequestMethod.Get);
-        Post = new ServerMethodIndexer(this, RequestMethod.Post);
-        Patch = new ServerMethodIndexer(this, RequestMethod.Patch);
-        Put = new ServerMethodIndexer(this, RequestMethod.Put);
-        Delete = new ServerMethodIndexer(this, RequestMethod.Delete);
+        return method switch
+        {
+            RequestMethod.Get => "GET",
+            RequestMethod.Post => "POST",
+            RequestMethod.Patch => "PATCH",
+            RequestMethod.Put => "PUT",
+            RequestMethod.Delete => "DELETE",
+            _ => throw new ArgumentOutOfRangeException(nameof(method), method, null)
+        };
+    }
+
+    internal Server()
+    {
     }
 }

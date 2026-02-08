@@ -4,13 +4,7 @@ namespace Artimora.Kronos;
 
 public partial class Server
 {
-    public ServerMethodIndexer Get;
-    public ServerMethodIndexer Post;
-    public ServerMethodIndexer Patch;
-    public ServerMethodIndexer Put;
-    public ServerMethodIndexer Delete;
-
-    private void AddRequestMethod(string path, UserRequestMethod response, RequestMethod method)
+    internal void AddRequestMethod(string path, UserRequestMethod response, string method)
     {
         if (requestHandlers.TryGetValue(method, out var handler))
         {
@@ -27,20 +21,15 @@ public partial class Server
         requestHandlers[method] = handler;
     }
 
-    public class ServerMethodIndexer
+    public Dictionary<GeneralRequestMethod, UserRequestMethod> this[string path]
     {
-        private readonly Server server;
-        private readonly RequestMethod method;
-
-        internal ServerMethodIndexer(Server server, RequestMethod method)
+        get => [];
+        set
         {
-            this.server = server;
-            this.method = method;
-        }
-
-        public UserRequestMethod this[string path]
-        {
-            set => server.AddRequestMethod(path, value, method);
+            foreach (var pair in value)
+            {
+                AddRequestMethod(path, pair.Value, pair.Key.Method);
+            }
         }
     }
 }

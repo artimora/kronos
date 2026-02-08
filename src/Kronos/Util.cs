@@ -14,7 +14,7 @@ public static class Util
         using var body = CloneStream(request.InputStream);
 
         var formData = new Dictionary<string, string>();
-        string rawBody = string.Empty;
+        var rawBody = string.Empty;
 
         try
         {

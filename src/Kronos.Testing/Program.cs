@@ -9,30 +9,37 @@ public static class Program
 
     private static void Main()
     {
-        var server = new Server
+        var builder = new ServerBuilder
         {
-            Get =
+            ["/"] =
             {
-                ["/"] = d => d.Text("Hello World!"),
-                ["/json"] = d => d.Json(new Dictionary<string, string>()
+                [RequestMethod.Get] = d => d.Text("Hello World!"),
+                [RequestMethod.Post] = d => d.Json(new Dictionary<string, string>()
+                {
+                    ["hello"] = "world!",
+                    ["content"] = d.BodyTextContents ?? string.Empty
+                })
+            },
+            ["/json"] =
+            {
+                [RequestMethod.Get] = d => d.Json(new Dictionary<string, string>()
                 {
                     ["Hello"] = "World!"
-                }),
-                ["/html"] = d => d.Html(Loader.LoadTextResource("Testing.html")),
-                ["/test/:id"] = d =>
+                })
+            },
+            ["/html"] = { [RequestMethod.Get] = d => d.Html(Loader.LoadTextResource("Testing.html")) },
+            ["/test/:id"] =
+            {
+                [RequestMethod.Get] = d =>
                 {
                     var id = d.GetParam("id");
 
                     return d.Text($"{nameof(id)}: {id}");
-                },
-                ["/test/:id/:value"] = d =>
-                {
-                    var id = d.GetParam("id");
-                    var value = d.GetParam("value");
-
-                    return d.Text($"{nameof(id)}: {id} | {nameof(value)}: {value}");
-                },
-                ["/:id/:value"] = d =>
+                }
+            },
+            ["/test/:id/:value"] =
+            {
+                [RequestMethod.Get] = d =>
                 {
                     var id = d.GetParam("id");
                     var value = d.GetParam("value");
@@ -40,17 +47,20 @@ public static class Program
                     return d.Text($"{nameof(id)}: {id} | {nameof(value)}: {value}");
                 }
             },
-            Post =
+            ["/:id/:value"] =
             {
-                ["/"] = d => d.Json(new Dictionary<string, string>()
+                [RequestMethod.Get] = d =>
                 {
-                    ["hello"] = "world!",
-                    ["content"] = d.BodyTextContents ?? string.Empty
-                })
+                    var id = d.GetParam("id");
+                    var value = d.GetParam("value");
+
+                    return d.Text($"{nameof(id)}: {id} | {nameof(value)}: {value}");
+                }
             }
         };
 
+        var server = builder.Build();
 
-        server.Listen(3000, 4321, 5172); // blocking
+        server.Listen(); // blocking
     }
 }

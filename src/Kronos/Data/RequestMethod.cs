@@ -1,6 +1,6 @@
 namespace Artimora.Kronos.Data;
 
-internal enum RequestMethod
+public enum RequestMethod
 {
     Get,
     Post,
