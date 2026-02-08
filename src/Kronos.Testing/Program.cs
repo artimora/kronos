@@ -9,7 +9,7 @@ public static class Program
 
     private static void Main()
     {
-        var builder = new ServerBuilder
+        var builder = new Server.Builder
         {
             ["/"] =
             {
