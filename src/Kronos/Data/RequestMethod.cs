@@ -4,7 +4,7 @@ namespace Artimora.Kronos;
 
 public readonly struct RequestMethod(string method) : IEquatable<RequestMethod>
 {
-    public readonly string Method = method;
+    public readonly string Method = method.ToUpper();
 
     public static implicit operator string(RequestMethod method) => method.Method;
 
