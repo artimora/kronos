@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Artimora.Kronos.Data;
+namespace Artimora.Kronos;
 
 public readonly struct GeneralRequestMethod(string method) : IEquatable<GeneralRequestMethod>
 {

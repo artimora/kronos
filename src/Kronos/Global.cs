@@ -1,3 +1,3 @@
 // type aliases
 
-global using UserRequestMethod = System.Func<Artimora.Kronos.Data.RequestData, Artimora.Kronos.Data.RequestReturnData>;
+global using UserRequestMethod = System.Func<Artimora.Kronos.RequestData, Artimora.Kronos.RequestReturnData>;

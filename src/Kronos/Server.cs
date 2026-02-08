@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using Artimora.Kronos.Data;
 
 namespace Artimora.Kronos;
 

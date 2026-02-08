@@ -1,7 +1,4 @@
-﻿using System.Text.Json;
-using Artimora.Kronos.Data;
-
-namespace Artimora.Kronos.Testing;
+﻿namespace Artimora.Kronos.Testing;
 
 public static class Program
 {

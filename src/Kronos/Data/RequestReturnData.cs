@@ -1,4 +1,4 @@
-namespace Artimora.Kronos.Data;
+namespace Artimora.Kronos;
 
 public readonly struct RequestReturnData
 {
