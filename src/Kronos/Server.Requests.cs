@@ -19,7 +19,7 @@ public partial class Server
         requestHandlers[method] = handler;
     }
 
-    public Dictionary<GeneralRequestMethod, UserRequestMethod> this[string path]
+    public Dictionary<RequestMethod, UserRequestMethod> this[string path]
     {
         get => [];
         set

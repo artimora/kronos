@@ -4,9 +4,9 @@ public partial class Server
 {
     public class Builder
     {
-        private readonly Dictionary<string, Dictionary<GeneralRequestMethod, UserRequestMethod>> paths = [];
+        private readonly Dictionary<string, Dictionary<RequestMethod, UserRequestMethod>> paths = [];
 
-        public Dictionary<GeneralRequestMethod, UserRequestMethod> this[string path]
+        public Dictionary<RequestMethod, UserRequestMethod> this[string path]
         {
             get
             {
