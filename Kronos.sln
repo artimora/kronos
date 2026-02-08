@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repo", "Repo", "{59D0C9C2-D
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kronos.Example", "src\Kronos.Example\Kronos.Example.csproj", "{3C922FF7-27AE-42C9-B18D-F454FDA82B82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,5 +27,9 @@ Global
 		{50FD5313-A63B-4363-A783-6F48FA19D01D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50FD5313-A63B-4363-A783-6F48FA19D01D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50FD5313-A63B-4363-A783-6F48FA19D01D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C922FF7-27AE-42C9-B18D-F454FDA82B82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C922FF7-27AE-42C9-B18D-F454FDA82B82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C922FF7-27AE-42C9-B18D-F454FDA82B82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C922FF7-27AE-42C9-B18D-F454FDA82B82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
