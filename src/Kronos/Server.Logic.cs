@@ -7,17 +7,17 @@ namespace Artimora.Kronos;
 
 public partial class Server
 {
-    public void Listen() => Listen(3000);
+    private int port = 3000;
 
-    public void Listen(params int[] ports)
+    public void Listen() => Listen(port);
+
+    public void Listen(int targetPort)
     {
-        var uris = new string[ports.Length * 2];
-
-        for (int i = 0; i < ports.Length; i++)
-        {
-            uris[i * 2] = $"http://127.0.0.1:{ports[i]}/";
-            uris[i * 2 + 1] = $"http://localhost:{ports[i]}/";
-        }
+        port = targetPort;
+        
+        var uris = new string[2];
+        uris[0] = $"http://127.0.0.1:{port}/";
+        uris[1] = $"http://localhost:{port}/";
 
         Listen(uris);
     }
@@ -27,8 +27,8 @@ public partial class Server
     {
         listener = new HttpListener();
 
-        for (int i = 0; i < baseUris.Length; i++)
-            listener.Prefixes.Add(baseUris[i]);
+        foreach (var uris in baseUris)
+            listener.Prefixes.Add(uris);
 
         listener.Start();
 
@@ -55,7 +55,7 @@ public partial class Server
 
             try
             {
-                var handled = HandleRequest(GetMethod(req.HttpMethod), req.Url!.LocalPath, req);
+                var handled = HandleRequest(req.HttpMethod, req.Url!.LocalPath, req);
 
                 if (handled is null)
                 {
@@ -95,7 +95,7 @@ public partial class Server
         }
     }
 
-    private RequestReturnData? HandleRequest(RequestMethod method, string path, HttpListenerRequest request)
+    private RequestReturnData? HandleRequest(string method, string path, HttpListenerRequest request)
     {
         Log.Network($"Request: {method.ToString().ToUpper()} {path}");
 
