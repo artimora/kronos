@@ -26,4 +26,8 @@
         <PackageReference Include="HttpMultipartParser" Version="9.1.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Kronos.csproj.DotSettings" />
+    </ItemGroup>
+
 </Project>
