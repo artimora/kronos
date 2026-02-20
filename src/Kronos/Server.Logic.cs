@@ -91,20 +91,29 @@ public partial class Server
         Log.Network($"Request: {method.ToUpper()} {path}");
         var forcedStatusCode = -1;
 
+        var handlerRequests404 = false;
+
         if (!requestHandlers.TryGetValue(method, out var methodHandlers))
         {
             Log.Error($"No request handlers registered for method '{method.ToUpper()}'. Attempting /404 redirect.");
+            handlerRequests404 = true;
+        }
 
+        var skipMethodHandlerMatching = false;
+        UserRequestMethod handler = null!;
+
+        if (handlerRequests404)
+        {
             if (!Attempt404Redirect())
             {
                 Console.WriteLine();
                 return null!;
             }
+
+            skipMethodHandlerMatching = true;
         }
 
-        UserRequestMethod handler = null!;
-
-        if (Util.FindMatchingTemplate(methodHandlers.Keys, path, out var urlValues) is { } handlerMatch)
+        if (Util.FindMatchingTemplate(methodHandlers!.Keys, path, out var urlValues) is { } handlerMatch && !skipMethodHandlerMatching)
         {
             Log.Debug($"Match: {handlerMatch}");
             foreach (var kv in urlValues)
@@ -112,7 +121,7 @@ public partial class Server
 
             handler = methodHandlers[handlerMatch];
         }
-        else if (methodHandlers.TryGetValue(path, out var foundHandler))
+        else if (skipMethodHandlerMatching && methodHandlers!.TryGetValue(path, out var foundHandler))
         {
             handler = foundHandler;
         }
@@ -145,8 +154,8 @@ public partial class Server
 
         var data = handler(requestData);
 
-        if (forcedStatusCode != -1) 
-            data = new RequestReturnData(data.Data, data.Type,  forcedStatusCode);
+        if (forcedStatusCode != -1)
+            data = new RequestReturnData(data.Data, data.Type, forcedStatusCode);
 
         Log.Success($"Handled: {method.ToUpper()} {path}");
 
