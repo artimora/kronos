@@ -17,6 +17,10 @@ public static class Program
                     ["content"] = d.BodyTextContents ?? string.Empty
                 })
             },
+            ["/404"] =
+            {
+                [RequestMethod.Get] = d => d.Text("route not found lol"),
+            },
             ["/exception"] =
             {
                 [RequestMethod.Get] = d => throw new Exception()
