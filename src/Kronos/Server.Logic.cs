@@ -81,14 +81,6 @@ public partial class Server
                 Log.Exception(e);
 
                 resp.StatusCode = (int)HttpStatusCode.InternalServerError;
-                resp.ContentType = "application/json";
-
-                Log.Debug(e.Message);
-                var data = Encoding.UTF8.GetBytes(e.Message);
-                resp.ContentEncoding = Encoding.UTF8;
-                resp.ContentLength64 = data.LongLength;
-
-                await resp.OutputStream.WriteAsync(data);
                 resp.Close();
             }
         }
