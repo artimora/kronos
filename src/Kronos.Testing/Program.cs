@@ -17,6 +17,10 @@ public static class Program
                     ["content"] = d.BodyTextContents ?? string.Empty
                 })
             },
+            ["/exception"] =
+            {
+                [RequestMethod.Get] = d => throw new Exception()
+            },
             ["/json"] =
             {
                 [RequestMethod.Get] = d => d.Json(new Dictionary<string, string>()
