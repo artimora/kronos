@@ -13,7 +13,7 @@ public partial class Server
     public void Listen(int targetPort)
     {
         port = targetPort;
-        
+
         var uris = new string[2];
         uris[0] = $"http://127.0.0.1:{port}/";
         uris[1] = $"http://localhost:{port}/";
@@ -59,7 +59,6 @@ public partial class Server
                 if (handled is null)
                 {
                     resp.StatusCode = (int)HttpStatusCode.NotFound;
-                    await resp.OutputStream.WriteAsync(Encoding.UTF8.GetBytes([]));
                     resp.Close();
                     continue;
                 }
@@ -69,6 +68,7 @@ public partial class Server
                 resp.ContentType = handled.Value.Type;
                 resp.ContentEncoding = Encoding.UTF8;
                 resp.ContentLength64 = data.LongLength;
+                resp.StatusCode = handled.Value.StatusCode;
 
                 resp.AddHeader("X-Content-Type-Options", "nosniff");
 
@@ -88,19 +88,32 @@ public partial class Server
 
     private RequestReturnData? HandleRequest(string method, string path, HttpListenerRequest request)
     {
-        Log.Network($"Request: {method.ToString().ToUpper()} {path}");
+        Log.Network($"Request: {method.ToUpper()} {path}");
+        var forcedStatusCode = -1;
+
+        var handlerRequests404 = false;
 
         if (!requestHandlers.TryGetValue(method, out var methodHandlers))
         {
-            Log.Error($"No request handlers registered for method '{method.ToString().ToUpper()}'.");
-
-            Console.WriteLine();
-            return null!;
+            Log.Error($"No request handlers registered for method '{method.ToUpper()}'. Attempting /404 redirect.");
+            handlerRequests404 = true;
         }
 
+        var skipMethodHandlerMatching = false;
         UserRequestMethod handler = null!;
 
-        if (Util.FindMatchingTemplate(methodHandlers.Keys, path, out var urlValues) is string handlerMatch)
+        if (handlerRequests404)
+        {
+            if (!Attempt404Redirect())
+            {
+                Console.WriteLine();
+                return null!;
+            }
+
+            skipMethodHandlerMatching = true;
+        }
+
+        if (Util.FindMatchingTemplate(methodHandlers!.Keys, path, out var urlValues) is { } handlerMatch && !skipMethodHandlerMatching)
         {
             Log.Debug($"Match: {handlerMatch}");
             foreach (var kv in urlValues)
@@ -108,23 +121,22 @@ public partial class Server
 
             handler = methodHandlers[handlerMatch];
         }
-        else if (methodHandlers.TryGetValue(path, out var foundHandler))
+        else if (skipMethodHandlerMatching && methodHandlers!.TryGetValue(path, out var foundHandler))
         {
-            if (foundHandler is not null)
-                handler = foundHandler;
+            handler = foundHandler;
         }
         else
         {
-            Log.Error($"No request handler found for path '{method.ToString().ToUpper()}' with method '{path}'.");
-            Console.WriteLine();
-            return null!;
+            Log.Error($"No request handler found for path '{method.ToUpper()}' with method '{path}'. Attempting /404 redirect.");
+
+            if (!Attempt404Redirect())
+            {
+                Console.WriteLine();
+                return null!;
+            }
         }
 
-        if (handler is null)
-            return null!;
-
-
-        Log.Info($"Request handler found: {method.ToString().ToUpper()} {path}");
+        Log.Info($"Request handler found: {method.ToUpper()} {path}");
 
         var (formData, rawBody) = Util.GetRequestBodyContents(request);
 
@@ -142,10 +154,27 @@ public partial class Server
 
         var data = handler(requestData);
 
+        if (forcedStatusCode != -1)
+            data = new RequestReturnData(data.Data, data.Type, forcedStatusCode);
 
-        Log.Success($"Handled: {method.ToString().ToUpper()} {path}");
+        Log.Success($"Handled: {method.ToUpper()} {path}");
 
         Console.WriteLine();
         return data;
+
+        bool Attempt404Redirect()
+        {
+            if (!requestHandlers.TryGetValue("GET", out var getHandlers) || !getHandlers.TryGetValue("/404", out var routeHandler))
+            {
+                Log.Error("Unable to retrieve /404 route handler");
+                return false;
+            }
+
+            Log.Success("Redirected to 404 handler");
+            handler = routeHandler;
+            forcedStatusCode = 404;
+
+            return true;
+        }
     }
 }

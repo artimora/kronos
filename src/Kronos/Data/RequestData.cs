@@ -31,11 +31,11 @@ public readonly struct RequestData(
         return UrlDynamicValues[paramName] ?? string.Empty;
     }
 
-    public RequestReturnData Text(string text) => new(text, Server.GetReturnType(ReturnType.Text));
+    public RequestReturnData Text(string text, int statusCode = 200) => new(text, Server.GetReturnType(ReturnType.Text), statusCode);
 
 #pragma warning disable IL2026, IL3050
-    public RequestReturnData Json(object data) => new(JsonSerializer.Serialize(data), Server.GetReturnType(ReturnType.Json));
+    public RequestReturnData Json(object data, int statusCode = 200) => new(JsonSerializer.Serialize(data), Server.GetReturnType(ReturnType.Json), statusCode);
 #pragma warning restore IL2026, IL3050
 
-    public RequestReturnData Html(string text) => new(text, Server.GetReturnType(ReturnType.Html));
+    public RequestReturnData Html(string text, int statusCode = 200) => new(text, Server.GetReturnType(ReturnType.Html), statusCode);
 }
