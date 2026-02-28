@@ -63,6 +63,24 @@ public static class Program
                 }
             }
         };
+        
+        var apiV1 = new Server.Builder
+        {
+            ["/ping"] =
+            {
+                [RequestMethod.Get] = d => d.Text("pong")
+            }
+        };
+        builder.AddGroup("/api/v1", apiV1);
+        
+        var apiV2 = new Server.Builder
+        {
+            ["/debug/ping"] =
+            {
+                [RequestMethod.Get] = d => d.Text("pong")
+            }
+        };
+        builder.AddGroup("/api/v2", apiV2);
 
         var server = builder.Build();
 
