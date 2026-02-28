@@ -1,5 +1,6 @@
 using System.Collections.Specialized;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 
 namespace Artimora.Kronos;
@@ -31,11 +32,14 @@ public readonly struct RequestData(
         return UrlDynamicValues[paramName] ?? string.Empty;
     }
 
-    public RequestReturnData Text(string text, int statusCode = 200) => new(text, Server.GetReturnType(ReturnType.Text), statusCode);
+    public RequestReturnData Body(string contents, string mime = "text/plain", int statusCode = 200) => new(Encoding.UTF8.GetBytes(contents), mime, statusCode);
+    public RequestReturnData Body(byte[] contents, string mime = "application/octet-stream", int statusCode = 200) => new(contents, mime, statusCode);
+
+    public RequestReturnData Text(string text, int statusCode = 200) => new(Encoding.UTF8.GetBytes(text), Server.GetReturnType(ReturnType.Text), statusCode);
 
 #pragma warning disable IL2026, IL3050
-    public RequestReturnData Json(object data, int statusCode = 200) => new(JsonSerializer.Serialize(data), Server.GetReturnType(ReturnType.Json), statusCode);
+    public RequestReturnData Json(object data, int statusCode = 200) => new(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(data)), Server.GetReturnType(ReturnType.Json), statusCode);
 #pragma warning restore IL2026, IL3050
 
-    public RequestReturnData Html(string text, int statusCode = 200) => new(text, Server.GetReturnType(ReturnType.Html), statusCode);
+    public RequestReturnData Html(string text, int statusCode = 200) => new(Encoding.UTF8.GetBytes(text), Server.GetReturnType(ReturnType.Html), statusCode);
 }
