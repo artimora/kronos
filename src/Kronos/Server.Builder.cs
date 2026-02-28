@@ -37,17 +37,19 @@ public partial class Server
             return instance;
         }
 
-        public void AddGroup(string path, Builder group)
+        public Builder AddGroup(string path, Builder group)
         {
             foreach (var pair in group.paths)
             {
-                if (path.EndsWith('/') && !pair.Key.StartsWith('/'))
+                if (path.EndsWith('/') && pair.Key.StartsWith('/'))
                     path = path[..^1];
 
                 var full = $"{path}{pair.Key}";
 
                 this[full] = pair.Value;
             }
+
+            return this;
         }
     }
 }

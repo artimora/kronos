@@ -6,7 +6,7 @@ public static class Program
 
     private static void Main()
     {
-        var builder = new Server.Builder
+        var baseServer = new Server.Builder
         {
             ["/"] =
             {
@@ -71,7 +71,6 @@ public static class Program
                 [RequestMethod.Get] = d => d.Text("pong")
             }
         };
-        builder.AddGroup("/api/v1", apiV1);
         
         var apiV2 = new Server.Builder
         {
@@ -80,7 +79,11 @@ public static class Program
                 [RequestMethod.Get] = d => d.Text("pong")
             }
         };
-        builder.AddGroup("/api/v2", apiV2);
+
+        var builder = new Server.Builder()
+            .AddGroup("/", baseServer)
+            .AddGroup("/api/v1/", apiV1)
+            .AddGroup("/api/v2/", apiV2);
 
         var server = builder.Build();
 
