@@ -8,9 +8,13 @@ public partial class Server
 {
     private int port = 3000;
 
-    public void Listen() => Listen(port);
+    // highkey the main reason a Shutdown and shouldRun duo is used here is that i have zero idea how CancellationToken works
+    private bool shouldRun = true;
+    public void Shutdown() => shouldRun = false;
 
-    public void Listen(int targetPort)
+    public async Task Listen() => await Listen(port);
+
+    public async Task Listen(int targetPort)
     {
         port = targetPort;
 
@@ -18,34 +22,34 @@ public partial class Server
         uris[0] = $"http://127.0.0.1:{port}/";
         uris[1] = $"http://localhost:{port}/";
 
-        Listen(uris);
+        await Listen(uris);
     }
 
-
-    public void Listen(params string[] baseUris)
+    public async Task Listen(params string[] baseUris)
     {
         listener = new HttpListener();
 
-        foreach (var uris in baseUris)
-            listener.Prefixes.Add(uris);
+        foreach (var uri in baseUris)
+            listener.Prefixes.Add(uri);
 
         listener.Start();
 
-        Log.Network(baseUris.AddFirstItem($"Listening for connections in the following places:"));
-
+        Log.Network(baseUris.AddFirstItem("Listening for connections in the following places:"));
         Console.WriteLine();
 
-        // Handle requests
-        var listenTask = HandleIncomingConnections();
-        listenTask.GetAwaiter().GetResult();
-
-        // Close the listener
-        listener.Close();
+        try
+        {
+            await HandleIncomingConnections();
+        }
+        finally
+        {
+            listener.Close();
+        }
     }
 
     private async Task HandleIncomingConnections()
     {
-        while (true)
+        while (shouldRun)
         {
             var ctx = await listener.GetContextAsync();
 
@@ -71,7 +75,6 @@ public partial class Server
 
                 resp.AddHeader("X-Content-Type-Options", "nosniff");
 
-                // Write out to the response stream (asynchronously), then close it
                 await resp.OutputStream.WriteAsync(data);
                 resp.Close();
             }

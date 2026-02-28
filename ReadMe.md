@@ -9,7 +9,7 @@
 This is the bare minimum for a server with a default response message
 
 ```csharp
-new Server.Builder
+await new Server.Builder
     {
         ["/"] =
         {
@@ -24,7 +24,7 @@ These two methods are the same because `RequestMethod.Get` maps to `GET` interna
 `Hello, World! (twice?)`
 
 ```csharp
-new Server.Builder
+await new Server.Builder
     {
         ["/"] =
         {
@@ -41,7 +41,7 @@ new Server.Builder
 Visiting `http://localhost:3000/test` will return `id: test`
 
 ```csharp
-new Server.Builder
+await new Server.Builder
     {
         ["/:id"] =
         {
@@ -70,7 +70,7 @@ Visiting `http://localhost:3000/json` will return:
 ```
 
 ```csharp
-new Server.Builder
+await new Server.Builder
     {
         ["/json"] =
         {
@@ -87,7 +87,7 @@ new Server.Builder
 #### HTML
 
 ```csharp
-new Server.Builder
+await new Server.Builder
     {
         ["/html"] =
         {
@@ -118,7 +118,7 @@ var apiV2 = new Server.Builder
     }
 };
 
-new Server.Builder()
+await new Server.Builder()
     .AddGroup("/api/v1/", apiV1)
     .AddGroup("/api/v2/", apiV2)
     .Build()

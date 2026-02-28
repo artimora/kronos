@@ -4,7 +4,7 @@ public static class Program
 {
     private static readonly ResourceLoader Loader = new(typeof(ResourceLoader).Assembly, "Artimora.Kronos.Testing.Resources");
 
-    private static void Main()
+    private static async Task Main()
     {
         var baseServer = new Server.Builder
         {
@@ -87,6 +87,6 @@ public static class Program
 
         var server = builder.Build();
 
-        server.Listen(); // blocking
+        await server.Listen(); 
     }
 }
