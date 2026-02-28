@@ -5,7 +5,6 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Artimora.Kronos</RootNamespace>
-        <PublishAot>true</PublishAot>
         <PackageId>Artimora.Kronos</PackageId>
         <Title>Kronos</Title>
         <Authors>Artimora</Authors>
@@ -15,13 +14,13 @@
         <RepositoryUrl>https://github.com/artimora/kronos</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <Company>Artimora</Company>
-        <AssemblyVersion>1.1.0</AssemblyVersion>
-        <FileVersion>1.1.0</FileVersion>
+        <AssemblyVersion>1.1.1</AssemblyVersion>
+        <FileVersion>1.1.1</FileVersion>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <PackageLicenseFile>License</PackageLicenseFile>
         <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
-        <Version>1.1.0</Version>
+        <Version>1.1.1</Version>
     </PropertyGroup>
 
     <ItemGroup>
