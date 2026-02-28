@@ -63,8 +63,7 @@ public partial class Server
                     continue;
                 }
 
-
-                var data = Encoding.UTF8.GetBytes(handled.Value.Data);
+                var data = handled.Value.Data;
                 resp.ContentType = handled.Value.Type;
                 resp.ContentEncoding = Encoding.UTF8;
                 resp.ContentLength64 = data.LongLength;
