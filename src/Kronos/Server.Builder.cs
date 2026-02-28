@@ -1,3 +1,5 @@
+using CopperDevs.Celesium;
+
 namespace Artimora.Kronos;
 
 public partial class Server
@@ -33,6 +35,21 @@ public partial class Server
             }
 
             return instance;
+        }
+
+        public Builder AddGroup(string path, Builder group)
+        {
+            foreach (var pair in group.paths)
+            {
+                if (path.EndsWith('/') && pair.Key.StartsWith('/'))
+                    path = path[..^1];
+
+                var full = $"{path}{pair.Key}";
+
+                this[full] = pair.Value;
+            }
+
+            return this;
         }
     }
 }

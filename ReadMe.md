@@ -20,7 +20,8 @@ new Server.Builder
     .Listen();
 ```
 
-These two methods are the same because `RequestMethod.Get` maps to `GET` internally. When you visit `/` it displays `Hello, World! (twice?)`
+These two methods are the same because `RequestMethod.Get` maps to `GET` internally. When you visit `/` it displays
+`Hello, World! (twice?)`
 
 ```csharp
 new Server.Builder
@@ -56,7 +57,9 @@ new Server.Builder
     .Listen();
 ```
 
-### JSON
+### Body
+
+#### JSON
 
 Visiting `http://localhost:3000/json` will return:
 
@@ -81,7 +84,7 @@ new Server.Builder
     .Listen();
 ```
 
-### HTML
+#### HTML
 
 ```csharp
 new Server.Builder
@@ -94,4 +97,34 @@ new Server.Builder
     }
     .Build()
     .Listen();
+```
+
+### Groups
+
+```csharp
+var apiV1 = new Server.Builder
+{
+    ["/ping"] =
+    {
+        [RequestMethod.Get] = d => d.Text("pong")
+    }
+};
+        
+var apiV2 = new Server.Builder
+{
+    ["/debug/ping"] =
+    {
+        [RequestMethod.Get] = d => d.Text("pong")
+    }
+};
+
+new Server.Builder()
+    .AddGroup("/api/v1/", apiV1)
+    .AddGroup("/api/v2/", apiV2)
+    .Build()
+    .Listen();
+
+// resulting paths: 
+// /api/v1/ping
+// /api/v1/debug/ping
 ```
