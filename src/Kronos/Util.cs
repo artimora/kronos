@@ -1,5 +1,5 @@
 using System.Net;
-using CopperDevs.Logger;
+using CopperDevs.Celesium;
 using HttpMultipartParser;
 
 namespace Artimora.Kronos;
@@ -10,8 +10,8 @@ public static class Util
     {
         if (!request.HasEntityBody)
             return (new Dictionary<string, string>(), string.Empty);
-
-        using var body = CloneStream(request.InputStream);
+        
+        using var body = request.InputStream.Clone();
 
         var formData = new Dictionary<string, string>();
         var rawBody = string.Empty;
@@ -38,17 +38,6 @@ public static class Util
         }
 
         return (formData, rawBody);
-    }
-
-    public static MemoryStream CloneStream(Stream originalStream)
-    {
-        if (originalStream.CanSeek)
-            originalStream.Position = 0;
-
-        MemoryStream clonedStream = new();
-        originalStream.CopyTo(clonedStream);
-        clonedStream.Position = 0;
-        return clonedStream;
     }
 
     public static bool TryMatchPath(

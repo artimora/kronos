@@ -1,6 +1,6 @@
 using System.Net;
 using System.Text;
-using CopperDevs.Logger;
+using CopperDevs.Celesium;
 
 namespace Artimora.Kronos;
 
