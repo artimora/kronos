@@ -1,6 +1,6 @@
 ﻿using Artimora.Kronos;
 
-new Server.Builder
+await new Server.Builder
     {
         ["/"] =
         {
