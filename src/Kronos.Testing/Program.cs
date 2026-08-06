@@ -85,6 +85,11 @@ public static class Program
             .AddGroup("/api/v1/", apiV1)
             .AddGroup("/api/v2/", apiV2);
 
+        builder["/query-test"] = new Dictionary<RequestMethod, Func<RequestData, RequestReturnData>>()
+        {
+            [RequestMethod.Get] = d => d.Text($"raw: {d.RequestUrl!.Query}\nq={d.GetQueryParam("q")}")
+        };
+        
         var server = builder.Build();
 
         await server.Listen(); 

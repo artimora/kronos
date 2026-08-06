@@ -2,6 +2,7 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using System.Web;
 
 namespace Artimora.Kronos;
 
@@ -13,7 +14,8 @@ public readonly struct RequestData(
     Uri? requestUrl,
     string? requestRawUrl,
     string? bodyTextContents,
-    Dictionary<string, string>? urlDynamicValues
+    Dictionary<string, string>? urlDynamicValues,
+    string rawQuery
 )
 {
     public readonly string UserAgent = userAgent;
@@ -23,13 +25,21 @@ public readonly struct RequestData(
     public readonly Uri? RequestUrl = requestUrl;
     public readonly string? RequestRawUrl = requestRawUrl;
     public readonly string? BodyTextContents = bodyTextContents;
+    public readonly string? RawQuery = rawQuery;
+    
 
     // ReSharper disable once InconsistentNaming
+    private readonly NameValueCollection QueryValues = HttpUtility.ParseQueryString(rawQuery);
     private readonly Dictionary<string, string> UrlDynamicValues = urlDynamicValues ?? [];
 
     public string GetParam(string paramName)
     {
         return UrlDynamicValues[paramName] ?? string.Empty;
+    }
+
+    public string GetQueryParam(string paramName)
+    {
+        return QueryValues.Get(paramName) ?? string.Empty;
     }
 
 #pragma warning disable CA1822
