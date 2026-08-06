@@ -32,8 +32,14 @@ public readonly struct RequestData(
         return UrlDynamicValues[paramName] ?? string.Empty;
     }
 
+#pragma warning disable CA1822
+    // ReSharper disable MemberCanBeMadeStatic.Global
+    // ReSharper disable MemberCanBePrivate.Global
     public RequestReturnData Body(string contents, string mime = "text/plain", int statusCode = 200) => new(Encoding.UTF8.GetBytes(contents), mime, statusCode);
     public RequestReturnData Body(byte[] contents, string mime = "application/octet-stream", int statusCode = 200) => new(contents, mime, statusCode);
+    // ReSharper restore MemberCanBePrivate.Global
+    // ReSharper restore MemberCanBeMadeStatic.Global
+#pragma warning restore CA1822
 
     public RequestReturnData Text(string text, int statusCode = 200) => Body(text, "text/plain", statusCode);
 

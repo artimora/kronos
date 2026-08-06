@@ -40,6 +40,7 @@ public static class Util
         return (formData, rawBody);
     }
 
+    // ReSharper disable once MemberCanBePrivate.Global
     public static bool TryMatchPath(
         string dynamicTemplate,
         string filledPath,
@@ -53,7 +54,7 @@ public static class Util
         if (templateParts.Length != filledParts.Length)
             return false;
 
-        for (int i = 0; i < templateParts.Length; i++)
+        for (var i = 0; i < templateParts.Length; i++)
         {
             var templatePart = templateParts[i];
             var filledPart = filledParts[i];

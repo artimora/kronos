@@ -1,5 +1,6 @@
 namespace Artimora.Kronos;
 
+// ReSharper disable once ClassCannotBeInstantiated : we got a constructor in the main Server.cs file 
 public partial class Server
 {
     internal void AddRequestMethod(string path, UserRequestMethod response, string method)

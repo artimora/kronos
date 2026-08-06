@@ -4,6 +4,7 @@ using CopperDevs.Celesium;
 
 namespace Artimora.Kronos;
 
+// ReSharper disable once ClassCannotBeInstantiated : we got a constructor in the main Server.cs file 
 public partial class Server
 {
     private int port = 3000;

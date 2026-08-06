@@ -17,7 +17,8 @@ public partial class Server
 
                 return paths[path];
             }
-            set => paths[path] = value;
+            // ReSharper disable once MemberCanBePrivate.Global
+            set => paths[path] = value ??  throw new ArgumentNullException(nameof(value));
         }
 
         public Server Build()
