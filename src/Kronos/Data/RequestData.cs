@@ -26,20 +26,21 @@ public readonly struct RequestData(
     public readonly string? RequestRawUrl = requestRawUrl;
     public readonly string? BodyTextContents = bodyTextContents;
     public readonly string? RawQuery = rawQuery;
-    
 
     // ReSharper disable once InconsistentNaming
-    private readonly NameValueCollection QueryValues = HttpUtility.ParseQueryString(rawQuery);
-    private readonly Dictionary<string, string> UrlDynamicValues = urlDynamicValues ?? [];
+    private readonly NameValueCollection queryValues = HttpUtility.ParseQueryString(rawQuery);
+    private readonly Dictionary<string, string> urlDynamicValues = urlDynamicValues ?? [];
 
-    public string GetParam(string paramName)
-    {
-        return UrlDynamicValues[paramName] ?? string.Empty;
-    }
+    public string GetParam(string paramName) => urlDynamicValues[paramName] ?? string.Empty;
 
-    public string GetQueryParam(string paramName)
+    public string GetQueryParam(string paramName) => queryValues.Get(paramName) ?? string.Empty;
+
+    public Dictionary<string, string> GetAllParams() => urlDynamicValues;
+
+    public Dictionary<string, string> GetAllQueryParams()
     {
-        return QueryValues.Get(paramName) ?? string.Empty;
+        var values = queryValues;
+        return (queryValues.AllKeys as string[]).ToDictionary(item => item, values.Get)!; // some straight bs here btw
     }
 
 #pragma warning disable CA1822
