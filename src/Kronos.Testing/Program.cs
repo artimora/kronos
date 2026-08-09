@@ -61,9 +61,13 @@ public static class Program
 
                     return d.Text($"{nameof(id)}: {id} | {nameof(value)}: {value}");
                 }
+            },
+            ["/query-test"] =
+            {
+                [RequestMethod.Get] = d => d.Text($"raw: {d.RequestUrl!.Query}\nq={d.GetQueryParam("q")}")
             }
         };
-        
+
         var apiV1 = new Server.Builder
         {
             ["/ping"] =
@@ -71,7 +75,7 @@ public static class Program
                 [RequestMethod.Get] = d => d.Text("pong")
             }
         };
-        
+
         var apiV2 = new Server.Builder
         {
             ["/debug/ping"] =
@@ -85,13 +89,8 @@ public static class Program
             .AddGroup("/api/v1/", apiV1)
             .AddGroup("/api/v2/", apiV2);
 
-        builder["/query-test"] = new Dictionary<RequestMethod, Func<RequestData, RequestReturnData>>()
-        {
-            [RequestMethod.Get] = d => d.Text($"raw: {d.RequestUrl!.Query}\nq={d.GetQueryParam("q")}")
-        };
-        
         var server = builder.Build();
 
-        await server.Listen(); 
+        await server.Listen();
     }
 }
