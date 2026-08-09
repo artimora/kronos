@@ -59,7 +59,7 @@ public partial class Server
 
             try
             {
-                var handled = HandleRequest(req.HttpMethod, req.Url!.LocalPath, req);
+                var handled = HandleRequest(req);
 
                 if (handled is null)
                 {
@@ -89,8 +89,11 @@ public partial class Server
         }
     }
 
-    private RequestReturnData? HandleRequest(string method, string path, HttpListenerRequest request)
+    private RequestReturnData? HandleRequest(HttpListenerRequest request)
     {
+        var method = request.HttpMethod;
+        var path = request.Url!.LocalPath;
+        
         Log.Network($"Request: {method.ToUpper()} {path}");
         var forcedStatusCode = -1;
 
@@ -152,7 +155,8 @@ public partial class Server
             request.Url,
             request.RawUrl,
             rawBody,
-            urlValues ?? []
+            urlValues ?? [],
+            request.Url.Query
         );
 
         var data = handler(requestData);
