@@ -67,14 +67,21 @@ public partial class Server
                     resp.Close();
                     continue;
                 }
+                
+                
 
                 var data = handled.Value.Data;
-                resp.ContentType = handled.Value.Type;
+
+                if (handled.Value.Type is not null)
+                    resp.ContentType = handled.Value.Type;
                 resp.ContentEncoding = Encoding.UTF8;
                 resp.ContentLength64 = data.LongLength;
                 resp.StatusCode = handled.Value.StatusCode;
 
                 resp.AddHeader("X-Content-Type-Options", "nosniff");
+
+                foreach (var (key, value) in handled.Value.Headers)
+                    resp.Headers[key] = value;
 
                 await resp.OutputStream.WriteAsync(data);
                 resp.Close();
@@ -93,7 +100,7 @@ public partial class Server
     {
         var method = request.HttpMethod;
         var path = request.Url!.LocalPath;
-        
+
         Log.Network($"Request: {method.ToUpper()} {path}");
         var forcedStatusCode = -1;
 
@@ -162,7 +169,7 @@ public partial class Server
         var data = handler(requestData);
 
         if (forcedStatusCode != -1)
-            data = new RequestReturnData(data.Data, data.Type, forcedStatusCode);
+            data = new RequestReturnData(data.Data, data.Type, forcedStatusCode, data.Headers);
 
         Log.Success($"Handled: {method.ToUpper()} {path}");
 

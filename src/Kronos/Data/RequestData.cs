@@ -31,6 +31,10 @@ public readonly struct RequestData(
     private readonly NameValueCollection queryValues = HttpUtility.ParseQueryString(rawQuery);
     private readonly Dictionary<string, string> urlDynamicValues = urlDynamicValues ?? [];
 
+    private readonly Dictionary<string, string> returnHeaders = [];
+
+    public void SetHeader(string key, string value) => returnHeaders[key] = value;
+
     public string GetParam(string paramName) => urlDynamicValues[paramName] ?? string.Empty;
 
     public string GetQueryParam(string paramName) => queryValues.Get(paramName) ?? string.Empty;
@@ -43,11 +47,19 @@ public readonly struct RequestData(
         return (queryValues.AllKeys as string[]).ToDictionary(item => item, values.Get)!; // some straight bs here btw
     }
 
+    public RequestReturnData Redirect(string url)
+    {
+        return new RequestReturnData([], null, (int)HttpStatusCode.Redirect, new Dictionary<string, string>()
+        {
+            ["location"] = url
+        });
+    }
+
 #pragma warning disable CA1822
     // ReSharper disable MemberCanBeMadeStatic.Global
     // ReSharper disable MemberCanBePrivate.Global
-    public RequestReturnData Body(string contents, string mime = "text/plain", int statusCode = 200) => new(Encoding.UTF8.GetBytes(contents), mime, statusCode);
-    public RequestReturnData Body(byte[] contents, string mime = "application/octet-stream", int statusCode = 200) => new(contents, mime, statusCode);
+    public RequestReturnData Body(string contents, string mime = "text/plain", int statusCode = 200) => new(Encoding.UTF8.GetBytes(contents), mime, statusCode, returnHeaders);
+    public RequestReturnData Body(byte[] contents, string mime = "application/octet-stream", int statusCode = 200) => new(contents, mime, statusCode, returnHeaders);
     // ReSharper restore MemberCanBePrivate.Global
     // ReSharper restore MemberCanBeMadeStatic.Global
 #pragma warning restore CA1822
