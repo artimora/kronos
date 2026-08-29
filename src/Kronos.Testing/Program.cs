@@ -65,6 +65,10 @@ public static class Program
             ["/query-test"] =
             {
                 [RequestMethod.Get] = d => d.Text($"raw: {d.RequestUrl!.Query}\nq={d.GetQueryParam("q")}")
+            },
+            ["/favicon.ico"] =
+            {
+                [RequestMethod.Get] = d => d.Redirect("https://copperdevs.com/images/favicon.png")
             }
         };
 
