@@ -7,7 +7,7 @@ namespace Artimora.Kronos;
 // ReSharper disable once ClassCannotBeInstantiated : we got a constructor in the main Server.cs file 
 public partial class Server
 {
-    private int port = 3000;
+    private int port = 3001;
 
     // highkey the main reason a Shutdown and shouldRun duo is used here is that i have zero idea how CancellationToken works
     private bool shouldRun = true;
@@ -35,7 +35,7 @@ public partial class Server
 
         listener.Start();
 
-        Log.Network(baseUris.AddFirstItem("Listening for connections in the following places:"));
+        Log.Network(baseUris.AddFirstItem("Listening for connections in the following places:"), "Kronos");
         Console.WriteLine();
 
         try
@@ -88,7 +88,7 @@ public partial class Server
             }
             catch (Exception e)
             {
-                Log.Exception(e);
+                Log.Exception(e, "Kronos");
 
                 resp.StatusCode = (int)HttpStatusCode.InternalServerError;
                 resp.Close();
@@ -101,14 +101,14 @@ public partial class Server
         var method = request.HttpMethod;
         var path = request.Url!.LocalPath;
 
-        Log.Network($"Request: {method.ToUpper()} {path}");
+        Log.Network($"Request: {method.ToUpper()} {path}", "Kronos");
         var forcedStatusCode = -1;
 
         var handlerRequests404 = false;
 
         if (!requestHandlers.TryGetValue(method, out var methodHandlers))
         {
-            Log.Error($"No request handlers registered for method '{method.ToUpper()}'. Attempting /404 redirect.");
+            Log.Error($"No request handlers registered for method '{method.ToUpper()}'. Attempting /404 redirect.", "Kronos");
             handlerRequests404 = true;
         }
 
@@ -128,9 +128,9 @@ public partial class Server
 
         if (Util.FindMatchingTemplate(methodHandlers!.Keys, path, out var urlValues) is { } handlerMatch && !skipMethodHandlerMatching)
         {
-            Log.Debug($"Match: {handlerMatch}");
+            Log.Debug($"Match: {handlerMatch}", "Kronos");
             foreach (var kv in urlValues)
-                Log.Debug($"  {kv.Key} = {kv.Value}");
+                Log.Debug($"  {kv.Key} = {kv.Value}", "Kronos");
 
             handler = methodHandlers[handlerMatch];
         }
@@ -140,7 +140,7 @@ public partial class Server
         }
         else
         {
-            Log.Error($"No request handler found for path '{method.ToUpper()}' with method '{path}'. Attempting /404 redirect.");
+            Log.Error($"No request handler found for path '{method.ToUpper()}' with method '{path}'. Attempting /404 redirect.", "Kronos");
 
             if (!Attempt404Redirect())
             {
@@ -149,7 +149,7 @@ public partial class Server
             }
         }
 
-        Log.Info($"Request handler found: {method.ToUpper()} {path}");
+        Log.Info($"Request handler found: {method.ToUpper()} {path}", "Kronos");
 
         var (formData, rawBody) = Util.GetRequestBodyContents(request);
 
@@ -171,7 +171,7 @@ public partial class Server
         if (forcedStatusCode != -1)
             data = new RequestReturnData(data.Data, data.Type, forcedStatusCode, data.Headers);
 
-        Log.Success($"Handled: {method.ToUpper()} {path}");
+        Log.Success($"Handled: {method.ToUpper()} {path}", "Kronos");
 
         Console.WriteLine();
         return data;
@@ -180,11 +180,11 @@ public partial class Server
         {
             if (!requestHandlers.TryGetValue("GET", out var getHandlers) || !getHandlers.TryGetValue("/404", out var routeHandler))
             {
-                Log.Error("Unable to retrieve /404 route handler");
+                Log.Error("Unable to retrieve /404 route handler", "Kronos");
                 return false;
             }
 
-            Log.Success("Redirected to 404 handler");
+            Log.Success("Redirected to 404 handler", "Kronos");
             handler = routeHandler;
             forcedStatusCode = 404;
 

@@ -23,7 +23,7 @@ public static class Util
         }
         catch (Exception ex)
         {
-            Log.Debug($"Multipart parsing failed: {ex.Message}");
+            Log.Debug($"Multipart parsing failed: {ex.Message}", "Kronos");
         }
 
         body.Position = 0;
@@ -34,7 +34,7 @@ public static class Util
         }
         catch (Exception ex)
         {
-            Log.Debug($"Raw body read failed: {ex.Message}");
+            Log.Debug($"Raw body read failed: {ex.Message}", "Kronos");
         }
 
         return (formData, rawBody);
